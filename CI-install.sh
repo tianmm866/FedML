@@ -38,7 +38,7 @@ conda config --set show_channel_urls yes
 # Install PyTorch (please visit pytorch.org to check your version according to your physical machines
 # nvidia-smi会显示11.4但是pytorch显示10.2，安装的镜像版本是10.2
 # pytorch已经安装成功
-conda install pytorch torchvision cudatoolkit=10.2 pytorch
+conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
 
 # Install MPI
 conda install -c anaconda mpi4py
