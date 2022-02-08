@@ -11,6 +11,7 @@ from scipy import stats
 
 parser = argparse.ArgumentParser()
 
+
 parser.add_argument('--name',
                     help='name of dataset to parse; default: sent140;',
                     type=str,
@@ -86,5 +87,5 @@ def print_dataset_stats(name):
     # fig_dir = os.path.join(data_dir, fig_name)
     # plt.savefig(fig_dir)
 
-
+print(args)
 print_dataset_stats(args.name)
