@@ -15,14 +15,14 @@ conda update -q conda
 conda info -a
 
 echo "conda create -n fedml python=3.8.0"
-conda create -n fedml python=3.8.0
+conda create -n fedml python=3.8.10
 
 echo "conda activate fedml"
 conda activate fedml
 
 # Install PyTorch (please visit pytorch.org to check your version according to your physical machines
 # nvidia-smi会显示
-conda install pytorch torchvision cudatoolkit=10.2 -c pytorch
+conda install pytorch torchvision cudatoolkit=11.4 -c pytorch
 
 # Install MPI
 conda install -c anaconda mpi4py
