@@ -50,7 +50,6 @@ conda install pytorch torchvision cudatoolkit=10.2
 
 # Install MPI
 conda install -c anaconda mpi4py
-# mpi4y可能安装不上，需要先执行apt install libopenmpi-dev，安装相应的包
 
 # Install Wandb
 pip install --upgrade wandb
@@ -58,8 +57,7 @@ pip install --upgrade wandb
 # Install other required package
 conda install scikit-learn
 conda install numpy
-# -c指定
-conda install -c anaconda h5py
+conda install h5py
 conda install setproctitle
 conda install networkx
 conda install tqdm
