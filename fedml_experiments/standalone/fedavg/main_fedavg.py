@@ -271,7 +271,7 @@ def custom_model_trainer(args, model):
         return MyModelTrainerTAG(model)
     elif args.dataset in ["fed_shakespeare", "stackoverflow_nwp"]:
         return MyModelTrainerNWP(model)
-    else: # default model trainer is for classification problem
+    else:  # default model trainer is for classification problem
         return MyModelTrainerCLS(model)
 
 
@@ -287,7 +287,8 @@ if __name__ == "__main__":
     logger.info(device)
 
     wandb.init(
-        project="fedml",
+        project="FedML",
+        entity="tianmm",
         name="FedAVG-r" + str(args.comm_round) + "-e" + str(args.epochs) + "-lr" + str(args.lr),
         config=args
     )
