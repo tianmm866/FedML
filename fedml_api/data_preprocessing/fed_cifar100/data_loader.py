@@ -6,7 +6,7 @@ import numpy as np
 import torch
 import torch.utils.data as data
 
-from . import utils
+from ..fed_shakespeare import utils
 
 logging.basicConfig()
 logger = logging.getLogger()
