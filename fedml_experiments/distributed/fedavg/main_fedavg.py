@@ -430,7 +430,8 @@ if __name__ == "__main__":
     if process_id == 0:
         wandb.init(
             # project="federated_nas",
-            project="fedml",
+            project="FedML",
+            entity="tianmm",
             name="FedAVG(d)"
             + str(args.partition_method)
             + "r"

@@ -18,7 +18,7 @@ echo $PROCESS_NUM
 
 hostname > mpi_host_file
 
-mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file python3 ./main_fedavg.py \
+mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file --allow-run-as-root python3 ./main_fedavg.py \
   --gpu_mapping_file "gpu_mapping.yaml" \
   --gpu_mapping_key "mapping_default" \
   --model $MODEL \
@@ -33,3 +33,4 @@ mpirun -np $PROCESS_NUM -hostfile ./mpi_host_file python3 ./main_fedavg.py \
   --batch_size $BATCH_SIZE \
   --lr $LR \
   --ci $CI
+
