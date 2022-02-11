@@ -47,10 +47,14 @@ class FedAVGServerManager(ServerManager):
         model_params = msg_params.get(MyMessage.MSG_ARG_KEY_MODEL_PARAMS)
         local_sample_number = msg_params.get(MyMessage.MSG_ARG_KEY_NUM_SAMPLES)
 
+        # 记录客户端发送过来的参数和ID
         self.aggregator.add_local_trained_result(sender_id - 1, model_params, local_sample_number)
+        # 检测是否所有人都发送完毕了,检查map
+        # 进程的一部调用， 所有的客户端的消息都ready，才做aggregation
         b_all_received = self.aggregator.check_whether_all_receive()
         logging.info("b_all_received = " + str(b_all_received))
         if b_all_received:
+            # 启动aggregation
             global_model_params = self.aggregator.aggregate()
             self.aggregator.test_on_server_for_all_clients(self.round_idx)
 
@@ -68,6 +72,7 @@ class FedAVGServerManager(ServerManager):
                 else:
                     client_indexes = self.preprocessed_client_lists[self.round_idx]
             else:
+                # fedavg 里面用户量比较大的时候，会对客户端做一个sampling, uniform sampling
                 # sampling clients
                 client_indexes = self.aggregator.client_sampling(self.round_idx, self.args.client_num_in_total,
                                                                  self.args.client_num_per_round)
@@ -77,6 +82,7 @@ class FedAVGServerManager(ServerManager):
             if self.args.is_mobile == 1:
                 global_model_params = transform_tensor_to_list(global_model_params)
 
+            # 发送模型给具体的client
             for receiver_id in range(1, self.size):
                 self.send_message_sync_model_to_client(receiver_id, global_model_params,
                                                        client_indexes[receiver_id - 1])

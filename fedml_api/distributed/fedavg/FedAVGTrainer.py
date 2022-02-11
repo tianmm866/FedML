@@ -22,6 +22,7 @@ class FedAVGTrainer(object):
     def update_model(self, weights):
         self.trainer.set_model_params(weights)
 
+    # sample通过换数据的方式来进行samply
     def update_dataset(self, client_index):
         self.client_index = client_index
         self.train_local = self.train_data_local_dict[client_index]

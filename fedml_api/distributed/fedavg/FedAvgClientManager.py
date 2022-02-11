@@ -9,8 +9,8 @@ try:
     from fedml_core.distributed.client.client_manager import ClientManager
     from fedml_core.distributed.communication.message import Message
 except ImportError:
-    from FedML.fedml_core.distributed.client.client_manager import ClientManager
-    from FedML.fedml_core.distributed.communication.message import Message
+    from fedml_core.distributed.client.client_manager import ClientManager
+    from fedml_core.distributed.communication.message import Message
 from .message_define import MyMessage
 from .utils import transform_list_to_tensor, post_complete_message_to_sweep_process
 
@@ -26,8 +26,10 @@ class FedAVGClientManager(ClientManager):
         super().run()
 
     def register_message_receive_handlers(self):
+        # 初始化的消息
         self.register_message_receive_handler(MyMessage.MSG_TYPE_S2C_INIT_CONFIG,
                                               self.handle_message_init)
+        # 更新合并完以后的消息
         self.register_message_receive_handler(MyMessage.MSG_TYPE_S2C_SYNC_MODEL_TO_CLIENT,
                                               self.handle_message_receive_model_from_server)
 
@@ -55,8 +57,11 @@ class FedAVGClientManager(ClientManager):
         if self.args.is_mobile == 1:
             model_params = transform_list_to_tensor(model_params)
 
+        # 将最新的模型更新到本地
         self.trainer.update_model(model_params)
+        # 更新模型的数据集到本地
         self.trainer.update_dataset(int(client_index))
+        # 更新round次数
         self.round_idx += 1
         self.__train()
         if self.round_idx == self.num_rounds - 1:
@@ -71,5 +76,6 @@ class FedAVGClientManager(ClientManager):
 
     def __train(self):
         logging.info("#######training########### round_id = %d" % self.round_idx)
+        # 得到样本数和训练好的模型的参数
         weights, local_sample_num = self.trainer.train(self.round_idx)
         self.send_model_to_server(0, weights, local_sample_num)

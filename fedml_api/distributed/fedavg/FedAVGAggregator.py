@@ -41,12 +41,14 @@ class FedAVGAggregator(object):
     def set_global_model_params(self, model_parameters):
         self.trainer.set_model_params(model_parameters)
 
+    # 添加结果，维护dict（）, 记录每个client的模型
     def add_local_trained_result(self, index, model_params, sample_num):
         logging.info("add_model. index = %d" % index)
         self.model_dict[index] = model_params
         self.sample_num_dict[index] = sample_num
         self.flag_client_model_uploaded_dict[index] = True
 
+    # 检测客户端是否都上传了模型
     def check_whether_all_receive(self):
         logging.debug("worker_num = {}".format(self.worker_num))
         for idx in range(self.worker_num):
@@ -74,6 +76,7 @@ class FedAVGAggregator(object):
         for k in averaged_params.keys():
             for i in range(0, len(model_list)):
                 local_sample_number, local_model_params = model_list[i]
+                # w为权重，根据数据量比例进行权重分配
                 w = local_sample_number / training_num
                 if i == 0:
                     averaged_params[k] = local_model_params[k] * w
@@ -107,6 +110,7 @@ class FedAVGAggregator(object):
         else:
             return self.test_global
 
+    # server具备了所有的测试数据集，对client进行测试
     def test_on_server_for_all_clients(self, round_idx):
         if self.trainer.test_on_the_server(self.train_data_local_dict, self.test_data_local_dict, self.device, self.args):
             return

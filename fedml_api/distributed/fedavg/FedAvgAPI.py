@@ -33,6 +33,7 @@ def FedML_FedAvg_distributed(
     model_trainer=None,
     preprocessed_sampling_lists=None,
 ):
+    # process_id = 0为server，其他为客户端
     if process_id == 0:
         init_server(
             args,
